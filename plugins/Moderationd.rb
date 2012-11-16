@@ -31,7 +31,7 @@ require_relative 'PermissionsCheck.rb'
 
 class Moderationd
     include Cinch::Plugin
-    Include Permissions
+    include Permissions
 
     match /mod/i, method: :mod
     match /unmod/i, method: :unmod
@@ -47,14 +47,14 @@ class Moderationd
         end
 
         # Check user permissions
-        if Permissions::Check(msg, user, chan)
+        if Permissions::check(msg, user, chan)
             msg.reply "#{user.name} is setting channel to MODERATED (+m)"
             chan.moderated = true
         end
     end
 
     def unmod(msg)
-        # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
+        # Put channel into Unmoderated (-m) mode if user is Voice/Op and channel is Moderated right now
         chan = msg.channel
         user = msg.user
 
@@ -64,7 +64,7 @@ class Moderationd
         end
 
         # Check user permissions
-        if Permissions::Check(msg, user, chan)
+        if Permissions::check(msg, user, chan)
             msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
             chan.moderated = false
         end
