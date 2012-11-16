@@ -38,12 +38,10 @@ if UTILITIES_ENABLED
 else
     plugins = []
 end
-
 if IRC_NICKSERV_IDENTIFY
     require 'cinch/plugins/identify'
     plugins.push(Cinch::Plugins::Identify)
 end
-
 if MODERATIOND_ENABLED
     require_relative 'plugins/Moderationd.rb'
     plugins.push(Moderationd)

@@ -30,4 +30,54 @@
 class Moderationd
     include Cinch::Plugin
 
+    match /mod/i, method: :mod
+    match /unmod/i, method: :unmod
+
+    def permCheck(user, chan)
+        if user.authed?
+            if chan.voiced?(user) || chan.half_opped?(user) || chan.opped?(user)
+                return true
+            else
+                msg.reply "#{user.name} hasn't got the rank to do that. (+v/+h/+o)"
+                return false
+            end
+        else
+            msg.reply "#{user.name} is not registered with NickServ."
+            return
+        end
+    end
+
+    def mod(msg)
+        # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
+        chan = msg.channel
+        user = msg.user
+
+        # Check for channel already being +m
+        if chan.moderated?
+            return # No need to act
+        end
+
+        # Check user permissions
+        if permCheck(user, chan)
+            msg.reply "#{user.name} is setting channel to MODERATED (+m)"
+            chan.moderated = true
+        end
+    end
+
+    def unmod(msg)
+        # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
+        chan = msg.channel
+        user = msg.user
+
+        # Check for channel already being +m
+        if !chan.moderated?
+            return # No need to act
+        end
+
+        # Check user permissions
+        if permCheck(user, chan)
+            msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
+            chan.moderated = false
+        end
+    end
 end
