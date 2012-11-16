@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -wKU
 
 ## Azbot
-##      => Core
+##      => Moderation mode module
 #
 # AZI Azbot Ruby port
 # 
@@ -27,25 +27,14 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 
+require_relative 'PermissionsCheck.rb'
+
 class Moderationd
     include Cinch::Plugin
+    Include Permissions
 
     match /mod/i, method: :mod
     match /unmod/i, method: :unmod
-
-    def permCheck(user, chan)
-        if user.authed?
-            if chan.voiced?(user) || chan.half_opped?(user) || chan.opped?(user)
-                return true
-            else
-                msg.reply "#{user.name} hasn't got the rank to do that. (+v/+h/+o)"
-                return false
-            end
-        else
-            msg.reply "#{user.name} is not registered with NickServ."
-            return
-        end
-    end
 
     def mod(msg)
         # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
@@ -58,7 +47,7 @@ class Moderationd
         end
 
         # Check user permissions
-        if permCheck(user, chan)
+        if Permissions::Check(msg, user, chan)
             msg.reply "#{user.name} is setting channel to MODERATED (+m)"
             chan.moderated = true
         end
@@ -75,7 +64,7 @@ class Moderationd
         end
 
         # Check user permissions
-        if permCheck(user, chan)
+        if Permissions::Check(msg, user, chan)
             msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
             chan.moderated = false
         end
