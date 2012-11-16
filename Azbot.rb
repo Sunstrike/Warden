@@ -36,12 +36,12 @@ if UTILITIES_ENABLED
     require_relative 'Utilities.rb'
     plugins = [Hugsim, Ecu, Bord, NES]
 else
-    plugins = [Cinch::Plugins::Identify]
+    plugins = []
 end
 
 if IRC_NICKSERV_IDENTIFY
     require 'cinch/plugins/identify'
-    plugins.push(NSIdentify)
+    plugins.push(Cinch::Plugins::Identify)
 end
 
 puts "STARTING CINCH CORE:"
