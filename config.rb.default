@@ -1,0 +1,24 @@
+## Config for Azbot
+
+# Channel to manage
+CHANNEL_NAME = ""
+
+# The bot login details
+IRC_ACCOUNT = ""
+IRC_NICK = ""
+
+# Nickserv IDENTIFY plugin
+IRC_NICKSERV_IDENTIFY = false
+IRC_NICKSERV_USERNAME = ""
+IRC_NICKSERV_PASSWORD = ""
+
+# Server details
+IRC_SERVER = ""
+IRC_PORT = 6667
+IRC_USESSL = false
+
+# FOR DEVELOPERS: Stop the system connecting to IRC
+DEBUG_MODE = false
+
+# 'Utilities' enabled?
+UTILITIES_ENABLED = true
