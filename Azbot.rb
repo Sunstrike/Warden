@@ -33,7 +33,7 @@ require_relative 'config.rb'
 VERSION = "v0.0.1"
 
 if UTILITIES_ENABLED
-    require_relative 'Utilities.rb'
+    require_relative 'plugins/Utilities.rb'
     plugins = [Hugsim, Ecu, Bord, NES]
 else
     plugins = []
@@ -42,6 +42,11 @@ end
 if IRC_NICKSERV_IDENTIFY
     require 'cinch/plugins/identify'
     plugins.push(Cinch::Plugins::Identify)
+end
+
+if MODERATIOND_ENABLED
+    require_relative 'plugins/Moderationd.rb'
+    plugins.push(Moderationd)
 end
 
 puts "STARTING CINCH CORE:"

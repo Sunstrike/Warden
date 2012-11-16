@@ -1,4 +1,5 @@
 ## Config for Azbot
+### SERVER/AUTH ###
 
 # Channel to manage
 CHANNEL_NAME = ""
@@ -19,6 +20,12 @@ IRC_USESSL = false
 
 # FOR DEVELOPERS: Stop the system connecting to IRC
 DEBUG_MODE = false
+
+
+### MODULES ###
+
+# !mod, !unmod module
+MODERATIOND_ENABLED = true
 
 # 'Utilities' enabled?
 UTILITIES_ENABLED = true
