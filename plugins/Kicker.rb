@@ -54,7 +54,7 @@ class Kicker
         # Parse 
         debug "Got params array #{msg.params.inspect}"
         
-        kickData = /(<.+>)?!kick (\w+) ?(.+)?/i.match(msg.params[1])
+        kickData = /(<.+>)?!kick (\S+) ?(.+)?/i.match(msg.params[1])
         kickable = kickData[2]
         reason = kickData[3]
 
