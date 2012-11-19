@@ -61,7 +61,7 @@ class Kicker
 
         kickUser = User(kickable)
         if (kickUser.unknown? || !chan.users.include?(kickUser))
-            msg.reply "I can't find #{kickable} to kick."
+            msg.reply "Can't find '#{kickable}'."
             return
         end
 

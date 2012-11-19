@@ -33,7 +33,7 @@ module Permissions
             if chan.voiced?(user) || chan.half_opped?(user) || chan.opped?(user)
                 return true
             else
-                msg.reply "#{user.name} hasn't got the rank to do that. (+v/+h/+o)"
+                msg.reply "#{user.name} has insufficient rank. (+v/+h/+o)"
                 return false
             end
         else
