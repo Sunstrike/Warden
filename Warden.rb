@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby -wKU
 
-## Azbot
+## Warden
 ##      => Core
 #
-# AZI Azbot Ruby port
+# AZI IRC moderation bot
 # 
 # Copyright (C) 2012 Robert Tully
 # 
@@ -46,6 +46,10 @@ if MODERATIOND_ENABLED
     require_relative 'plugins/Moderationd.rb'
     plugins.push(Moderationd)
 end
+if KICKER_ENABLED
+    require_relative 'plugins/Kicker.rb'
+    plugins.push(Kicker)
+end
 
 puts "STARTING CINCH CORE:"
 puts "\tServer: #{IRC_SERVER}"
@@ -58,7 +62,7 @@ bot = Cinch::Bot.new do
         c.server = IRC_SERVER
         c.nick = IRC_NICK
         c.user = IRC_ACCOUNT
-        c.realname = "Azbot::Cinch (#{VERSION}) by Sunstrike"
+        c.realname = "Warden::Cinch (#{VERSION}) by Sunstrike"
         c.channels = ["##{CHANNEL_NAME}"]
         c.plugins.plugins = plugins
         c.messages_per_second = 5

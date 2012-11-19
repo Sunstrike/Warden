@@ -1,4 +1,4 @@
-## Config for Azbot
+## Config for Warden
 ### SERVER/AUTH ###
 
 # Channel to manage
@@ -26,6 +26,9 @@ DEBUG_MODE = false
 
 # !mod, !unmod module
 MODERATIOND_ENABLED = true
+
+# Kicker module
+KICKER_ENABLED = true
 
 # 'Utilities' enabled?
 UTILITIES_ENABLED = true

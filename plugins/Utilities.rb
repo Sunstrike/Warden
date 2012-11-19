@@ -1,7 +1,7 @@
-## Azbot
+## Warden
 ##      => Easter eggs
 #
-# AZI Azbot Ruby port
+# AZI IRC moderation bot
 # 
 # This file was partly contributed by Hugsim of #Redux!
 #

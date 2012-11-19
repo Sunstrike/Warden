@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby -wKU
 
-## Azbot
+## Warden
 ##      => Permissions checker
 #
-# AZI Azbot Ruby port
+# AZI IRC moderation bot
 # 
 # Copyright (C) 2012 Robert Tully
 # 
