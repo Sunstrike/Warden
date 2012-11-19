@@ -34,22 +34,29 @@ class Kicker
     include Permissions
 
     match /kick/i, method: :kick
+    match /<.+> !kick/i, prefix: "", method: :kick
 
     def kick(msg)
         # Kick user, optionally with custom reason else 'asshat'
         chan = msg.channel
         user = msg.user
+
         # Check permissions
-        if !Permissions::check(msg, user, chan)
-            return
+        kickerPerm = accessLevel(chan, user)
+
+        debug "Kicker perm #{kickerPerm}"
+
+        if kickerPerm == :user
+            msg.reply "(#{user.name}) Insufficient permissions."
+            return; # Permfail.
         end
 
         # Parse 
         debug "Got params array #{msg.params.inspect}"
         
-        kickData = /!kick (\w+) ?(.+)?/i.match(msg.params[1])
-        kickable = kickData[1]
-        reason = kickData[2]
+        kickData = /(<.+>)?!kick (\w+) ?(.+)?/i.match(msg.params[1])
+        kickable = kickData[2]
+        reason = kickData[3]
 
         if kickable.nil? || kickable == ""
             return
@@ -65,8 +72,45 @@ class Kicker
             return
         end
 
+        # Target permissions
+        kickeePerm = accessLevel(chan, kickUser)
+        debug "kickUser perm #{kickeePerm}"
+
+        # Check for superior rank
+        if kickerPerm == :voice
+            if kickeePerm != :user
+                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
+                return
+            end
+        elsif kickerPerm == :halfop
+            if kickeePerm != :user && kickeePerm != :voice
+                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
+                return
+            end
+        elsif kickerPerm == :op
+            if kickeePerm != :user && kickeePerm != :voice && kickeePerm != :halfop
+                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
+                return
+            end
+        end
+
         # We can actually kick now
         msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
         chan.kick(kickUser, reason)
+    end
+
+    def accessLevel(chan,user)
+        debug "Channel owners: #{chan.owners.inspect}"
+        if chan.owners.include?(user)
+            return :owner
+        elsif chan.opped?(user)
+            return :op
+        elsif chan.half_opped?(user)
+            return :halfop
+        elsif chan.voiced?(user)
+            return :voice
+        else
+            return :user # No permission
+        end
     end
 end

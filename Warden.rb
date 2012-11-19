@@ -30,7 +30,7 @@
 require 'cinch'
 require_relative 'config.rb'
 
-VERSION = "v0.0.1"
+VERSION = "v0.0.2"
 
 if UTILITIES_ENABLED
     require_relative 'plugins/Utilities.rb'
