@@ -33,8 +33,8 @@ class Moderationd
     include Cinch::Plugin
     include Permissions
 
-    match /mod/i, method: :mod
-    match /unmod/i, method: :unmod
+    match /(<.+> )?!mod/i, method: :mod, prefix: ""
+    match /(<.+> )?!unmod/i, method: :unmod, prefix: ""
 
     def mod(msg)
         # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
