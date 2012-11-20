@@ -49,4 +49,21 @@ module Permissions
     end
 
     module_function :strictCheck
+
+    def accessLevel(chan,user)
+        debug "Channel owners: #{chan.owners.inspect}"
+        if chan.owners.include?(user)
+            return :owner
+        elsif chan.opped?(user)
+            return :op
+        elsif chan.half_opped?(user)
+            return :halfop
+        elsif chan.voiced?(user)
+            return :voice
+        else
+            return :user # No permission
+        end
+    end
+
+    module_function :accessLevel
 end

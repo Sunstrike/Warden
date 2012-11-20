@@ -50,6 +50,10 @@ if KICKER_ENABLED
     require_relative 'plugins/Kicker.rb'
     plugins.push(Kicker)
 end
+if SRV_MANAGER_ENABLED
+    require_relative 'plugins/SrvManager.rb'
+    plugins.push(SrvManager)
+end
 
 puts "STARTING CINCH CORE:"
 puts "\tServer: #{IRC_SERVER}"
@@ -71,6 +75,12 @@ bot = Cinch::Bot.new do
                 :username => IRC_NICKSERV_USERNAME,
                 :password => IRC_NICKSERV_PASSWORD,
                 :type     => :nickserv,
+            }
+        end
+        if SRV_MANAGER_ENABLED
+            c.plugins.options[SrvManager] = {
+                :wrapper => SRV_MANAGER_WRAPPER,
+                :socket  => SRV_MANAGER_SOCKET,
             }
         end
     end

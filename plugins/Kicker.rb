@@ -42,7 +42,7 @@ class Kicker
         user = msg.user
 
         # Check permissions
-        kickerPerm = accessLevel(chan, user)
+        kickerPerm = Permissions::accessLevel(chan, user)
 
         debug "Kicker perm #{kickerPerm}"
 
@@ -73,7 +73,7 @@ class Kicker
         end
 
         # Target permissions
-        kickeePerm = accessLevel(chan, kickUser)
+        kickeePerm = Permissions::accessLevel(chan, kickUser)
         debug "kickUser perm #{kickeePerm}"
 
         # Check for superior rank
@@ -97,20 +97,5 @@ class Kicker
         # We can actually kick now
         msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
         chan.kick(kickUser, reason)
-    end
-
-    def accessLevel(chan,user)
-        debug "Channel owners: #{chan.owners.inspect}"
-        if chan.owners.include?(user)
-            return :owner
-        elsif chan.opped?(user)
-            return :op
-        elsif chan.half_opped?(user)
-            return :halfop
-        elsif chan.voiced?(user)
-            return :voice
-        else
-            return :user # No permission
-        end
     end
 end
