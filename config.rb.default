@@ -32,3 +32,9 @@ KICKER_ENABLED = true
 
 # 'Utilities' enabled?
 UTILITIES_ENABLED = true
+
+
+### IDIOT TEST ###
+# Remove this config block before running
+puts "\e[31mSomeone hasn't read their config file!\e[0m"
+throw "Who hasn't read the config file fully? You haven't!"
