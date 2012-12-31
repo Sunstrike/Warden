@@ -49,3 +49,14 @@ class NES
         msg.reply "Not here ;)"
     end
 end
+
+class Bees
+    include Cinch::Plugin
+
+    match /.*bees.*/i, prefix: ""
+
+    def execute(msg)
+        debug "Sending BEES! message"
+        msg.reply "http://thechive.files.wordpress.com/2010/11/oprah-bees.gif"
+    end
+end

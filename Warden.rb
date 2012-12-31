@@ -34,7 +34,7 @@ VERSION = "v0.0.2"
 
 if UTILITIES_ENABLED
     require_relative 'plugins/Utilities.rb'
-    plugins = [Hugsim, Ecu, Bord, NES]
+    plugins = [Hugsim, Ecu, Bord, NES, Bees]
 else
     plugins = []
 end
