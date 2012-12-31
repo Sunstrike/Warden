@@ -42,7 +42,7 @@ end
 class NES
     include Cinch::Plugin
 
-    match /uuddlrlrab/i
+    match /uuddlrlrba/i
 
     def execute(msg)
         debug "Sending Konami message"
