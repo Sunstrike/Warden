@@ -34,7 +34,6 @@ class Kicker
     include Permissions
 
     match /kick/i, method: :kick
-    match /<.+> !kick/i, prefix: "", method: :kick
 
     def kick(msg)
         # Kick user, optionally with custom reason else 'asshat'
