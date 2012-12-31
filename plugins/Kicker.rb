@@ -47,7 +47,7 @@ class Kicker
         debug "Kicker perm #{kickerPerm}"
 
         if kickerPerm == :user
-            msg.reply "(#{user.name}) Insufficient permissions."
+            #msg.reply "(#{user.name}) Insufficient permissions."
             return; # Permfail.
         end
 
@@ -95,7 +95,7 @@ class Kicker
         end
 
         # We can actually kick now
-        msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
+        #msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
         chan.kick(kickUser, reason)
     end
 end

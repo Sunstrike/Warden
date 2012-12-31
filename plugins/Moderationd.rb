@@ -33,8 +33,8 @@ class Moderationd
     include Cinch::Plugin
     include Permissions
 
-    match /(<.+> )?!mod/i, method: :mod, prefix: ""
-    match /(<.+> )?!unmod/i, method: :unmod, prefix: ""
+    match /^!mod$/i, method: :mod, prefix: ""
+    match /^!unmod$/i, method: :unmod, prefix: ""
 
     def mod(msg)
         # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
@@ -48,7 +48,7 @@ class Moderationd
 
         # Check user permissions
         if Permissions::check(msg, user, chan)
-            msg.reply "#{user.name} is setting channel to MODERATED (+m)"
+            #msg.reply "#{user.name} is setting channel to MODERATED (+m)"
             chan.moderated = true
         end
     end
@@ -65,7 +65,7 @@ class Moderationd
 
         # Check user permissions
         if Permissions::check(msg, user, chan)
-            msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
+            #msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
             chan.moderated = false
         end
     end
