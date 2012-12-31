@@ -51,7 +51,6 @@ module Permissions
     module_function :strictCheck
 
     def accessLevel(chan,user)
-        debug "Channel owners: #{chan.owners.inspect}"
         if chan.owners.include?(user)
             return :owner
         elsif chan.opped?(user)

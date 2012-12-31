@@ -8,6 +8,11 @@
 
 class Hugsim
     include Cinch::Plugin
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = ["!hugsim"]
 
     match /hugsim/i
 
@@ -19,6 +24,11 @@ end
 
 class Ecu
     include Cinch::Plugin
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = ["!ecu"]
 
     match /ecu/i
 
@@ -30,6 +40,11 @@ end
 
 class Bord
     include Cinch::Plugin
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = ["!bord"]
 
     match /bord/i
 
@@ -41,6 +56,11 @@ end
 
 class NES
     include Cinch::Plugin
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = [] # Seeekrit
 
     match /uuddlrlrba/i
 
@@ -52,6 +72,11 @@ end
 
 class Bees
     include Cinch::Plugin
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = []
 
     match /.*bees.*/i, prefix: ""
 

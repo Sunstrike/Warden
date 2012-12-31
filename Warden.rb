@@ -30,7 +30,7 @@
 require 'cinch'
 require_relative 'config.rb'
 
-VERSION = "v0.0.2"
+VERSION = "v0.0.3"
 
 if UTILITIES_ENABLED
     require_relative 'plugins/Utilities.rb'
@@ -50,23 +50,30 @@ if KICKER_ENABLED
     require_relative 'plugins/Kicker.rb'
     plugins.push(Kicker)
 end
+## TODO: Implement server controller for Aznode/Sunstrike.io
+SRV_MANAGER_ENABLED = false
 if SRV_MANAGER_ENABLED
     require_relative 'plugins/SrvManager.rb'
     plugins.push(SrvManager)
 end
+if HELP_ENABLED
+    require_relative 'plugins/Help.rb'
+    plugins.push(Help)
+end
 
-puts "STARTING CINCH CORE:"
+puts "STARTING WARDEN CINCH CORE:"
 puts "\tServer: #{IRC_SERVER}"
 puts "\tChannel: ##{CHANNEL_NAME}"
-puts "\tBot Account: #{IRC_ACCOUNT}"
+puts "\tBot account: #{IRC_ACCOUNT}"
 puts "\tBot nick: #{IRC_NICK}"
 
 bot = Cinch::Bot.new do
     configure do |c|
         c.server = IRC_SERVER
+        c.port = IRC_PORT
         c.nick = IRC_NICK
         c.user = IRC_ACCOUNT
-        c.realname = "Warden::Cinch (#{VERSION}) by Sunstrike"
+        c.realname = "Warden::Cinch (#{VERSION})"
         c.channels = ["##{CHANNEL_NAME}"]
         c.plugins.plugins = plugins
         c.messages_per_second = 5
@@ -81,6 +88,11 @@ bot = Cinch::Bot.new do
             c.plugins.options[SrvManager] = {
                 :wrapper => SRV_MANAGER_WRAPPER,
                 :socket  => SRV_MANAGER_SOCKET,
+            }
+        end
+        if HELP_ENABLED
+            c.plugins.options[Help] = {
+                :modules => plugins
             }
         end
     end

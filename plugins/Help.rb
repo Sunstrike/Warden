@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -wKU
 
 ## Warden
-##      => Moderation mode module
+##      => Help module
 #
 # AZI IRC moderation bot
 # 
@@ -27,51 +27,45 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 
-require_relative 'PermissionsCheck.rb'
-
-class Moderationd
+class Help
     include Cinch::Plugin
-    include Permissions
     class << self
         attr_reader :commands
     end
 
-    @commands = ["!mod","!unmod"]
+    @commands = ["!help","!commands"]
+    @helpTxt = ""
 
-    match /^!mod$/i, method: :mod, prefix: ""
-    match /^!unmod$/i, method: :unmod, prefix: ""
+    match /help/i
+    match /commands/i
 
-    def mod(msg)
-        # Put channel into Moderated (+m) mode if user is Voice/Op and channel is not Moderated right now
-        chan = msg.channel
-        user = msg.user
-
-        # Check for channel already being +m
-        if chan.moderated?
-            return # No need to act
-        end
-
-        # Check user permissions
-        if Permissions::check(msg, user, chan)
-            #msg.reply "#{user.name} is setting channel to MODERATED (+m)"
-            chan.moderated = true
-        end
+    def initialize(bot)
+        super bot
+        # Setup modules
+        cmds = []
+        config[:modules].each { |mod|
+            begin
+                cmds = cmds.concat(mod.commands)
+            rescue
+                warn "Module " + mod.name + " did not have a commands field!"
+            end
+        }
+        debug "HelpLoader >> Command array: " + cmds.inspect
+        debug "HelpLoader >> Constructing !help/!commands text..."
+        first = true
+        cmds.each {|cmd|
+            if first
+                @helpTxt = "Available commands: " + cmd
+                first = false
+            else
+                @helpTxt = @helpTxt + ", #{cmd}"
+            end
+        }
     end
 
-    def unmod(msg)
-        # Put channel into Unmoderated (-m) mode if user is Voice/Op and channel is Moderated right now
-        chan = msg.channel
-        user = msg.user
-
-        # Check for channel already being +m
-        if !chan.moderated?
-            return # No need to act
-        end
-
-        # Check user permissions
-        if Permissions::check(msg, user, chan)
-            #msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
-            chan.moderated = false
-        end
+    def execute(msg)
+        debug "Sending help message"
+        msg.reply @helpTxt
     end
+
 end

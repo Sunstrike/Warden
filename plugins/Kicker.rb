@@ -32,6 +32,11 @@ require_relative 'PermissionsCheck.rb'
 class Kicker
     include Cinch::Plugin
     include Permissions
+    class << self
+        attr_reader :commands
+    end
+
+    @commands = ["!kick"]
 
     match /kick/i, method: :kick
 
@@ -95,6 +100,6 @@ class Kicker
 
         # We can actually kick now
         #msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
-        chan.kick(kickUser, reason)
+        chan.kick(kickUser, "(#{user.name}) #{reason}")
     end
 end

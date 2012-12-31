@@ -24,6 +24,9 @@ DEBUG_MODE = false
 
 ### MODULES ###
 
+# !help/!commands module
+HELP_ENABLED = true
+
 # !mod, !unmod module
 MODERATIOND_ENABLED = true
 
