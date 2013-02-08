@@ -50,12 +50,6 @@ if KICKER_ENABLED
     require_relative 'plugins/Kicker.rb'
     plugins.push(Kicker)
 end
-## TODO: Implement server controller for Aznode/Sunstrike.io
-SRV_MANAGER_ENABLED = false
-if SRV_MANAGER_ENABLED
-    require_relative 'plugins/SrvManager.rb'
-    plugins.push(SrvManager)
-end
 if HELP_ENABLED
     require_relative 'plugins/Help.rb'
     plugins.push(Help)
@@ -82,12 +76,6 @@ bot = Cinch::Bot.new do
                 :username => IRC_NICKSERV_USERNAME,
                 :password => IRC_NICKSERV_PASSWORD,
                 :type     => :nickserv,
-            }
-        end
-        if SRV_MANAGER_ENABLED
-            c.plugins.options[SrvManager] = {
-                :wrapper => SRV_MANAGER_WRAPPER,
-                :socket  => SRV_MANAGER_SOCKET,
             }
         end
         if HELP_ENABLED
