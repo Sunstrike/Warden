@@ -23,9 +23,8 @@ IRC_USESSL = false
 USE_RAVEN = false
 SENTRY_DSN = ''
 
-# FOR DEVELOPERS: Stop the system connecting to IRC
-DEBUG_MODE = false
-
+# FOR DEVELOPERS: Raven environment
+SENTRY_ENV = 'production'
 
 ### MODULES ###
 

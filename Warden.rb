@@ -32,60 +32,79 @@ require_relative 'config.rb'
 
 VERSION = "v0.0.3"
 
-if UTILITIES_ENABLED
-    require_relative 'plugins/Utilities.rb'
-    plugins = [Hugsim, Ecu, Bord, NES, Bees]
-else
-    plugins = []
-end
-if IRC_NICKSERV_IDENTIFY
-    require 'cinch/plugins/identify'
-    plugins.push(Cinch::Plugins::Identify)
-end
-if MODERATIOND_ENABLED
-    require_relative 'plugins/Moderationd.rb'
-    plugins.push(Moderationd)
-end
-if KICKER_ENABLED
-    require_relative 'plugins/Kicker.rb'
-    plugins.push(Kicker)
-end
-if HELP_ENABLED
-    require_relative 'plugins/Help.rb'
-    plugins.push(Help)
-end
-
-puts "STARTING WARDEN CINCH CORE:"
-puts "\tServer: #{IRC_SERVER}"
-puts "\tChannels: #{CHANNELS.inspect}"
-puts "\tBot account: #{IRC_ACCOUNT}"
-puts "\tBot nick: #{IRC_NICK}"
-
-bot = Cinch::Bot.new do
-    configure do |c|
-        c.server = IRC_SERVER
-        c.port = IRC_PORT
-        c.nick = IRC_NICK
-        c.user = IRC_ACCOUNT
-        c.realname = "Warden::Cinch (#{VERSION})"
-        c.channels = CHANNELS
-        c.plugins.plugins = plugins
-        c.messages_per_second = 5
-        if IRC_NICKSERV_IDENTIFY
-            c.plugins.options[Cinch::Plugins::Identify] = {
-                :username => IRC_NICKSERV_USERNAME,
-                :password => IRC_NICKSERV_PASSWORD,
-                :type     => :nickserv,
-            }
-        end
-        if HELP_ENABLED
-            c.plugins.options[Help] = {
-                :modules => plugins
-            }
+def buildBot(version, use_raven)
+    
+    if UTILITIES_ENABLED
+        require_relative 'plugins/Utilities.rb'
+        plugins = [Hugsim, Ecu, Bord, NES, Bees]
+    else
+        plugins = []
+    end
+    if IRC_NICKSERV_IDENTIFY
+        require 'cinch/plugins/identify'
+        plugins.push(Cinch::Plugins::Identify)
+    end
+    if MODERATIOND_ENABLED
+        require_relative 'plugins/Moderationd.rb'
+        plugins.push(Moderationd)
+    end
+    if KICKER_ENABLED
+        require_relative 'plugins/Kicker.rb'
+        plugins.push(Kicker)
+    end
+    if HELP_ENABLED
+        require_relative 'plugins/Help.rb'
+        plugins.push(Help)
+    end
+    if use_raven
+        require_relative 'plugins/RavenHelper.rb'
+        plugins.push(RavenHelper)
+    end
+    
+    puts "STARTING WARDEN CINCH CORE:"
+    puts "\tServer: #{IRC_SERVER}"
+    puts "\tChannels: #{CHANNELS.inspect}"
+    puts "\tBot account: #{IRC_ACCOUNT}"
+    puts "\tBot nick: #{IRC_NICK}"
+    
+    return Cinch::Bot.new do
+        configure do |c|
+            c.server = IRC_SERVER
+            c.port = IRC_PORT
+            c.nick = IRC_NICK
+            c.user = IRC_ACCOUNT
+            c.realname = "Warden::Cinch (#{version})"
+            c.channels = CHANNELS
+            c.plugins.plugins = plugins
+            c.messages_per_second = 5
+            if IRC_NICKSERV_IDENTIFY
+                c.plugins.options[Cinch::Plugins::Identify] = {
+                    :username => IRC_NICKSERV_USERNAME,
+                    :password => IRC_NICKSERV_PASSWORD,
+                    :type     => :nickserv,
+                }
+            end
+            if HELP_ENABLED
+                c.plugins.options[Help] = {
+                    :modules => plugins
+                }
+            end
         end
     end
 end
 
-if !DEBUG_MODE
+if USE_RAVEN
+    require 'raven'
+    Raven.configure do |config|
+        config.dsn = SENTRY_DSN
+        config.current_environment = SENTRY_ENV
+        config.excluded_exceptions = [Interrupt]
+    end
+    Raven.capture do
+        bot = buildBot(VERSION, true)
+        bot.start
+    end
+else
+    bot = buildBot(VERSION, false)
     bot.start
 end
