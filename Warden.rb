@@ -57,7 +57,7 @@ end
 
 puts "STARTING WARDEN CINCH CORE:"
 puts "\tServer: #{IRC_SERVER}"
-puts "\tChannel: ##{CHANNEL_NAME}"
+puts "\tChannels: #{CHANNELS.inspect}"
 puts "\tBot account: #{IRC_ACCOUNT}"
 puts "\tBot nick: #{IRC_NICK}"
 
@@ -68,7 +68,7 @@ bot = Cinch::Bot.new do
         c.nick = IRC_NICK
         c.user = IRC_ACCOUNT
         c.realname = "Warden::Cinch (#{VERSION})"
-        c.channels = ["##{CHANNEL_NAME}"]
+        c.channels = CHANNELS
         c.plugins.plugins = plugins
         c.messages_per_second = 5
         if IRC_NICKSERV_IDENTIFY

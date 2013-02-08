@@ -2,7 +2,7 @@
 ### SERVER/AUTH ###
 
 # Channel to manage
-CHANNEL_NAME = ""
+CHANNELS = ['#Example', '#Example']
 
 # The bot login details
 IRC_ACCOUNT = ""
