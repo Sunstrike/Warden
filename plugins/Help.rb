@@ -36,8 +36,8 @@ class Help
     @commands = ["!help","!commands"]
     @helpTxt = ""
 
-    match /help/i
-    match /commands/i
+    match(/help/i)
+    match(/commands/i)
 
     def initialize(bot)
         super bot
@@ -64,7 +64,7 @@ class Help
     end
 
     def execute(msg)
-        debug "Sending help message"
+        debug "Sending help message to #{msg.channel.name}"
         msg.reply @helpTxt
     end
 

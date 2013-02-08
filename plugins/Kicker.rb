@@ -38,7 +38,7 @@ class Kicker
 
     @commands = ["!kick"]
 
-    match /kick/i, method: :kick
+    match(/kick/i, method: :kick)
 
     def kick(msg)
         # Kick user, optionally with custom reason else 'asshat'
