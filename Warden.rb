@@ -67,7 +67,7 @@ def buildBot(version, use_raven)
     puts "\tBot account: #{IRC_ACCOUNT}"
     puts "\tBot nick: #{IRC_NICK}"
     
-    return Cinch::Bot.new do
+    Cinch::Bot.new do
         configure do |c|
             c.server = IRC_SERVER
             c.port = IRC_PORT

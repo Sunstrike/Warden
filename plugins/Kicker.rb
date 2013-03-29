@@ -45,6 +45,10 @@ class Kicker
         chan = msg.channel
         user = msg.user
 
+        if chan == nil
+            return # No channel
+        end
+
         # Check permissions
         kickerPerm = Permissions::accessLevel(chan, user)
 

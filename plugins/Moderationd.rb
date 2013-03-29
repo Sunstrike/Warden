@@ -46,8 +46,8 @@ class Moderationd
         chan = msg.channel
         user = msg.user
 
-        # Check for channel already being +m
-        if chan.moderated?
+        # Check for channel already being +m (or nil)
+        if chan == nil || chan.moderated?
             return # No need to act
         end
 
@@ -63,8 +63,8 @@ class Moderationd
         chan = msg.channel
         user = msg.user
 
-        # Check for channel already being +m
-        if !chan.moderated?
+        # Check for channel already being +m (or nil)
+        if chan == nil || !chan.moderated?
             return # No need to act
         end
 
