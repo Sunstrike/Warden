@@ -12,7 +12,7 @@ class Hugsim
         attr_reader :commands
     end
 
-    @commands = ["!hugsim"]
+    @commands = []
 
     match /hugsim/i
 
@@ -27,7 +27,7 @@ class Ecu
         attr_reader :commands
     end
 
-    @commands = ["!ecu"]
+    @commands = []
 
     match /ecu/i
 
@@ -42,7 +42,7 @@ class Bord
         attr_reader :commands
     end
 
-    @commands = ["!bord"]
+    @commands = []
 
     match /bord/i
 
@@ -57,7 +57,7 @@ class NES
         attr_reader :commands
     end
 
-    @commands = [] # Seeekrit
+    @commands = []
 
     match /uuddlrlrba/i
 

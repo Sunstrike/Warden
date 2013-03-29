@@ -52,16 +52,12 @@ class Kicker
         # Check permissions
         kickerPerm = Permissions::accessLevel(chan, user)
 
-        debug "Kicker perm #{kickerPerm}"
-
         if kickerPerm == :user
             #msg.reply "(#{user.name}) Insufficient permissions."
             return; # Permfail.
         end
 
         # Parse 
-        debug "Got params array #{msg.params.inspect}"
-        
         kickData = /(<.+>)?!kick (\S+) ?(.+)?/i.match(msg.params[1])
         kickable = kickData[2]
         reason = kickData[3]
@@ -76,34 +72,28 @@ class Kicker
 
         kickUser = User(kickable)
         if (kickUser.unknown? || !chan.users.include?(kickUser))
-            msg.reply "Can't find '#{kickable}'."
             return
         end
 
         # Target permissions
         kickeePerm = Permissions::accessLevel(chan, kickUser)
-        debug "kickUser perm #{kickeePerm}"
 
         # Check for superior rank
         if kickerPerm == :voice
             if kickeePerm != :user
-                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
                 return
             end
         elsif kickerPerm == :halfop
             if kickeePerm != :user && kickeePerm != :voice
-                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
                 return
             end
         elsif kickerPerm == :op
             if kickeePerm != :user && kickeePerm != :voice && kickeePerm != :halfop
-                msg.reply "(#{user.name}) Cannot kick those of same or higher rank."
                 return
             end
         end
 
         # We can actually kick now
-        #msg.reply "(#{user.name}) Kicking '#{kickable}' with reason '#{reason}'."
         chan.kick(kickUser, "(#{user.name}) #{reason}")
     end
 end

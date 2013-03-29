@@ -53,7 +53,6 @@ class Moderationd
 
         # Check user permissions
         if Permissions::check(msg, user, chan)
-            #msg.reply "#{user.name} is setting channel to MODERATED (+m)"
             chan.moderated = true
         end
     end
@@ -70,7 +69,6 @@ class Moderationd
 
         # Check user permissions
         if Permissions::check(msg, user, chan)
-            #msg.reply "#{user.name} is setting channel to UNMODERATED (-m)"
             chan.moderated = false
         end
     end

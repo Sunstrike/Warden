@@ -32,7 +32,6 @@ module Permissions
         if chan.voiced?(user) || chan.half_opped?(user) || chan.opped?(user)
             return true
         else
-            msg.reply "#{user.name} has insufficient rank. (+v/+h/+o)"
             return false
         end
     end
@@ -43,7 +42,6 @@ module Permissions
         if user.authed?
             return check(msg, user, chan)
         else
-            msg.reply "#{user.name} is not registered with NickServ."
             return false
         end
     end

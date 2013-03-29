@@ -64,7 +64,6 @@ class Help
     end
 
     def execute(msg)
-        debug "Sending help message to #{msg.channel.name}"
         msg.reply @helpTxt
     end
 
