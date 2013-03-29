@@ -53,7 +53,6 @@ class Kicker
         kickerPerm = Permissions::accessLevel(chan, user)
 
         if kickerPerm == :user
-            #msg.reply "(#{user.name}) Insufficient permissions."
             return; # Permfail.
         end
 
@@ -71,26 +70,24 @@ class Kicker
         end
 
         kickUser = User(kickable)
-        if (kickUser.unknown? || !chan.users.include?(kickUser))
+        if bot.user == kickUser.user || kickUser.unknown? || !chan.users.include?(kickUser)
             return
         end
 
         # Target permissions
         kickeePerm = Permissions::accessLevel(chan, kickUser)
 
-        # Check for superior rank
+        # Check for rank
         if kickerPerm == :voice
-            if kickeePerm != :user
-                return
-            end
-        elsif kickerPerm == :halfop
             if kickeePerm != :user && kickeePerm != :voice
                 return
             end
-        elsif kickerPerm == :op
+        elsif kickerPerm == :halfop
             if kickeePerm != :user && kickeePerm != :voice && kickeePerm != :halfop
                 return
             end
+        elsif kickerPerm == :op
+            # Ops can kick anything, even other ops
         end
 
         # We can actually kick now
