@@ -58,9 +58,10 @@ class POSTNotify
             channel = Channel(config[:channel])
             repo = data['repository']['name']
             branch = (/.+\/(.+)/.match(data['ref']))[1]
+            pusher = data['pusher']['name']
             commits = data['commits']
 
-            channel.send "#{repo}@#{branch}: #{data['commits'].length} changes pushed to GitHub."
+            channel.send "#{repo}@#{branch}: #{pusher} has pushed changes to GitHub."
             commits.each { |c|
                 shortHash = c['id'][1..7]
                 channel.send "[#{shortHash}] #{c['message']} (#{c['author']['username']})"
