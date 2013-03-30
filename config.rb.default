@@ -18,6 +18,10 @@ IRC_SERVER = ""
 IRC_PORT = 6667
 IRC_USESSL = false
 
+# POST notify plugin (Github Webhooks)
+POST_NOTIFY_PORT = 9090
+POST_NOTIFY_DEVCHANNEL = '#Example'
+
 # Error reporting (Sentry::Raven)
 # Requires the sentry-raven gem
 USE_RAVEN = false
@@ -36,6 +40,9 @@ MODERATIOND_ENABLED = true
 
 # Kicker module
 KICKER_ENABLED = true
+
+# POST Notify module
+POST_NOTIFY_ENABLED = true
 
 # 'Utilities' enabled?
 UTILITIES_ENABLED = true

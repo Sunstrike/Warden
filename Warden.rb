@@ -56,6 +56,10 @@ def buildBot(version, use_raven)
         require_relative 'plugins/Help.rb'
         plugins.push(Help)
     end
+    if POST_NOTIFY_ENABLED
+        require_relative 'plugins/POSTNotify.rb'
+        plugins.push(POSTNotify)
+    end
     if use_raven
         require_relative 'plugins/RavenHelper.rb'
         plugins.push(RavenHelper)
@@ -87,6 +91,12 @@ def buildBot(version, use_raven)
             if HELP_ENABLED
                 c.plugins.options[Help] = {
                     :modules => plugins
+                }
+            end
+            if POST_NOTIFY_ENABLED
+                c.plugins.options[POSTNotify] = {
+                    :port    => POST_NOTIFY_PORT,
+                    :channel => POST_NOTIFY_DEVCHANNEL
                 }
             end
         end
