@@ -50,6 +50,8 @@ class POSTNotify
         }
     end
 
+    ## ----------------------------------------------------------
+    ## GITHUB
     def githubEventSend(data)
         begin
             channel = Channel(config[:channel])
@@ -58,7 +60,7 @@ class POSTNotify
             pusher = data['pusher']['name']
             commits = data['commits']
 
-            channel.send "#{repo}@#{branch}: #{pusher} has pushed changes."
+            channel.send "#{repo}@#{branch}: #{pusher} has pushed changes to GitHub."
             commits.each { |c|
                 shortHash = c['id'][1..7]
                 channel.send "[#{shortHash}] #{c['message']} (#{c['author']['username']})"
@@ -89,6 +91,48 @@ class POSTNotify
         true # TODO: Implement source checking
     end
 
+    ## ----------------------------------------------------------
+    ## GITLAB
+    def gitlabEventSend(data)
+        begin
+            channel = Channel(config[:channel])
+            repo = data['repository']['name']
+            branch = (/.+\/(.+)/.match(data['ref']))[1]
+            pusher = data['user_name']
+            commits = data['commits']
+
+            channel.send "#{repo}@#{branch}: #{pusher} has pushed #{data['total_commits_count']} changesets to GitLab."
+            commits.each { |c|
+                shortHash = c['id'][1..7]
+                channel.send "[#{shortHash}] #{c['message']} (#{c['author']['name']})"
+            }
+        rescue Exception => e
+            warn "Failed to send commit messages: #{e.message}"
+        end
+    end
+
+    def handleGitlab(req)
+        ret = 200
+        begin
+            if verifyOriginGitlab(req.ip)
+                req.body.rewind
+                data = MultiJson.decode req.body.read
+                info "Got POST from Gitlab endpoint: #{data.inspect}"
+                gitlabEventSend(data)
+            else
+                ret = 403
+            end
+        rescue Exception => e
+            warn "Error in Gitlab endpoint (#{e.message})"
+            ret = 500
+        end
+        ret
+    end
+
+    def verifyOriginGitlab(ipAddr)
+        true # TODO: Implement source checking
+    end
+
 end
 
 class SinatraServer < Sinatra::Base
@@ -98,5 +142,9 @@ class SinatraServer < Sinatra::Base
 
     post '/github' do
         settings.controller.handleGithub(request, params[:payload])
+    end
+
+    post '/gitlab' do
+        settings.controller.handleGitlab(request)
     end
 end
