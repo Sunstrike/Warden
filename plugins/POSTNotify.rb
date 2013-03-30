@@ -28,6 +28,7 @@
 #
 
 require 'sinatra/base'
+require 'ipaddr'
 require 'multi_json'
 
 # Currently only supports GitHub
@@ -80,15 +81,22 @@ class POSTNotify
             else
                 ret = 403
             end
-        rescue Exception => e
-            warn "Error in Github endpoint (#{e.message})"
-            ret = 500
+        #rescue Exception => e
+        #    warn "Error in Github endpoint (#{e.message})"
+        #    ret = 500
         end
         ret
     end
 
     def verifyOriginGitHub(ipAddr)
-        true # TODO: Implement source checking
+        ip = IPAddr.new(ipAddr)
+        config[:gh_ips].each { |zone|
+            zoneIp = IPAddr.new(zone)
+            if zoneIp.include? ip
+                return true
+            end
+        }
+        false
     end
 
     ## ----------------------------------------------------------
@@ -130,7 +138,14 @@ class POSTNotify
     end
 
     def verifyOriginGitlab(ipAddr)
-        true # TODO: Implement source checking
+        ip = IPAddr.new(ipAddr)
+        config[:gl_ips].each { |zone|
+            zoneIp = IPAddr.new(zone)
+            if zoneIp.include? ip
+                return true
+            end
+        }
+        false
     end
 
 end

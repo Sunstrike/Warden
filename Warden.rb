@@ -96,7 +96,9 @@ def buildBot(version, use_raven)
             if POST_NOTIFY_ENABLED
                 c.plugins.options[POSTNotify] = {
                     :port    => POST_NOTIFY_PORT,
-                    :channel => POST_NOTIFY_DEVCHANNEL
+                    :channel => POST_NOTIFY_DEVCHANNEL,
+                    :gh_ips  => GITHUB_ENDPOINT_IPS,
+                    :gl_ips  => GITLAB_ENDPOINT_IPS
                 }
             end
         end
